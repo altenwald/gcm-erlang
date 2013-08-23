@@ -1,6 +1,8 @@
 gcm-erlang
 =======
 
+[![Build Status](https://api.travis-ci.org/bosqueviejo/gcm-erlang.png)](https://travis-ci.org/manuel-rubio/gcm-erlang)
+
 This software provides an Erlang client for [`GOOGLE CLOUD MESSAGING`](http://developer.android.com/google/gcm/index.html "Google Cloud Messaging for Android").
 
 
