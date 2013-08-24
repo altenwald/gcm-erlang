@@ -108,7 +108,7 @@ handle_cast({send, RegIds, Message}, #state{key=Key, error_fun=ErrorFun} = State
     ApiKey = string:concat("key=", Key),
 
     try httpc:request(post, {?BASEURL, [{"Authorization", ApiKey}], "application/json", GCMRequest}, [], []) of
-        {ok, {{_, 200, _}, Headers, GCMResponse}} ->
+        {ok, {{_, 200, _}, _Headers, GCMResponse}} ->
             Json = jsx:decode(response_to_binary(GCMResponse)),
             {_Multicast, _Success, Failure, Canonical, Results} = get_response_fields(Json),
             case to_be_parsed(Failure, Canonical) of
