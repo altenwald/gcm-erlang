@@ -18,7 +18,7 @@ So far `gcm-erlang` does only provide support for JSON messages since GCM does n
 ### How to compile the application gcm-erlang:
 
 The first thing you have to do is to compile all the Erlang files using `rebar`.
-    
+
     $ ./rebar get-deps compile
 
 ### How to run the application gcm-erlang:
@@ -76,7 +76,7 @@ In case of errors you can catch the output with a callback function. You only ne
     9> Callback = fun(Error, RegId) -> io:format("~p ~p~n", [RegId, Error]) end.
     10> gcm:start(foo, "apikey", Callback).
 
-The first param is always a binary with the error and the second param can be a binary with the Registered ID or a tuple refering to the Old Registered ID and the New Registered ID. All of the errors you can handle are in this list are: 
+The first param is always a binary with the error and the second param can be a binary with the Registered ID or a tuple refering to the Old Registered ID and the New Registered ID. All of the errors you can handle are in this list are:
 
 - `NewRegistrationId`, send the OldRegID and NewRegID as a tuple in the second param.
 - `Unavailable`, you should retry the request (use exponential back-off).
