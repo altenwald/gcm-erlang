@@ -8,6 +8,8 @@
 init_and_stop_test() ->
     ?assertMatch({ok, _}, gcm:start_link(test, "APIKEY")),
     ?assertEqual(stopped, gcm:stop(test)),
+    % possible race condition in R16B
+    timer:sleep(100),
     ?assertEqual(undefined, whereis(test)).
 
 start() ->
