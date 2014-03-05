@@ -116,6 +116,7 @@ handle_cast({send, RegIds, Message}, #state{key=Key, error_fun=ErrorFun} = State
                     parse_results(Results, RegIds, ErrorFun),
                     {noreply, State};
                 false ->
+                    lager:debug("Nothing to parse! ~p~n", [Json]),
                     {noreply, State}
             end;
         {error, Reason} ->
@@ -124,6 +125,7 @@ handle_cast({send, RegIds, Message}, #state{key=Key, error_fun=ErrorFun} = State
             {noreply, State};
         {ok, {{_, 400, _}, _, _}} ->
             %% Some error in the Json.
+            lager:error("error in the JSON: ~p~n", [GCMRequest]),
             {noreply, State};
         {ok, {{_, 401, _}, _, _}} ->
             %% Some error in the authorization.
@@ -131,9 +133,11 @@ handle_cast({send, RegIds, Message}, #state{key=Key, error_fun=ErrorFun} = State
             {noreply, State};
         {ok, {{_, Code, _}, _, _}} when Code >= 500 andalso Code =< 599 ->
             %% TODO: retry with exponential back-off
+            lager:warning("server error... ~p~n (we should retry!)", [Code]),
             {noreply, State};
-        {ok, {{_StatusLine, _, _}, _, _Body}} ->
+        {ok, {{StatusLine, Code, _}, _, _Body}} ->
             %% Request handled but some error like timeout happened.
+            lager:error("another error ~p ~p~n", [Code, StatusLine]),
             {noreply, State};
         OtherError ->
             %% Some other nasty error.
